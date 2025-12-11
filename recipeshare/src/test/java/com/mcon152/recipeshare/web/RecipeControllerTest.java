@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -466,5 +467,44 @@ class RecipeControllerTest {
             verify(recipeService, times(1)).getAllRecipes();
             verifyNoMoreInteractions(recipeService); // will fail if any other calls happened
         }
+
+    } @Test
+    void testCreateSoupRecipe() throws Exception {
+
+        // Arrange: fake saved entity returned by the mocked service
+        SoupRecipe saved = new SoupRecipe();
+        saved.setId(100L);
+        saved.setTitle("Tomato Basil Soup");
+        saved.setDescription("Smooth and comforting");
+        saved.setIngredients("Tomatoes, basil, garlic, cream");
+        saved.setInstructions("Simmer tomatoes; blend; add basil.");
+        saved.setServings(3);
+        saved.setSpiceLevel(2);
+
+        // Mock service behavior
+        Mockito.when(recipeService.addRecipe(any(Recipe.class)))
+                .thenReturn(saved);
+
+        // JSON request body
+        String json = """
+        {
+          "type": "SOUP",
+          "title": "Tomato Basil Soup",
+          "description": "Smooth and comforting",
+          "ingredients": "Tomatoes, basil, garlic, cream",
+          "instructions": "Simmer tomatoes; blend; add basil.",
+          "servings": 3,
+          "spiceLevel": 2
+        }
+        """;
+
+        // Act + Assert
+        mockMvc.perform(post("/api/recipes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "http://localhost/api/recipes/100"));
     }
+
+
 }

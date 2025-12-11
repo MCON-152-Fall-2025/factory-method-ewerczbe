@@ -72,4 +72,5 @@ class RecipeTest {
         Recipe recipe = null;
         assertNull(recipe);
     }
+
 }

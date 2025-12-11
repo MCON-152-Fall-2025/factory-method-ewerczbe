@@ -7,6 +7,8 @@ public class RecipeRequest {
     private String ingredients;
     private String instructions;
     private Integer servings;
+    private Integer spiceLevel;
+
 
     public RecipeRequest() {}
 
@@ -27,5 +29,13 @@ public class RecipeRequest {
 
     public Integer getServings() { return servings; }
     public void setServings(Integer servings) { this.servings = servings; }
+    public Integer getSpiceLevel() {
+        return spiceLevel;
+    }
+
+    public void setSpiceLevel(Integer spiceLevel) {
+        this.spiceLevel = spiceLevel;
+    }
+
 }
 

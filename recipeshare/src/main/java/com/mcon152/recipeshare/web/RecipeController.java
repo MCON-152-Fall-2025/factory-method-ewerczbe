@@ -25,21 +25,18 @@ public class RecipeController {
      */
     @PostMapping
     public ResponseEntity<Recipe> addRecipe(@RequestBody RecipeRequest recipeRequest) {
-        try {
-            Recipe toSave = RecipeFactory.createFromRequest(recipeRequest);
-            Recipe saved = recipeService.addRecipe(toSave);
+        Recipe toSave = RecipeFactory.createFromRequest(recipeRequest);
+        Recipe saved = recipeService.addRecipe(toSave);
 
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest()           // /api/recipes
-                    .path("/{id}")                  // /{id}
-                    .buildAndExpand(saved.getId())
-                    .toUri();
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.getId())
+                .toUri();
 
-            return ResponseEntity.created(location).body(saved);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        return ResponseEntity.created(location).body(saved);
     }
+
 
     /**
      * Retrieve all recipes. 200 OK.
