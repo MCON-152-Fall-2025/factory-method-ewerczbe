@@ -1,4 +1,4 @@
-name: Autograding Tests
+ name: Autograding Tests
 on:
   - push:
     branches:
