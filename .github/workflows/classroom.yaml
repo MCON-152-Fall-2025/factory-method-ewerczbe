@@ -1,14 +1,17 @@
- name: Autograding Tests
+name: Autograding Tests
+
 on:
-  - push:
+  push:
     branches:
       - factory_method
-  - workflow_dispatch
-  - repository_dispatch
+  workflow_dispatch:
+  repository_dispatch:
+
 permissions:
   checks: write
   actions: read
   contents: read
+
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
@@ -34,6 +37,7 @@ jobs:
           command: mvn -f pom.xml -B -ntp -DfailIfNoTests=true -Dtest=linkedlist.DetectCycleInfoTest test
           timeout: 10
           max-score: 100
+
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
